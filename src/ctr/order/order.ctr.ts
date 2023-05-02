@@ -81,7 +81,7 @@ class OrderCtr {
             }
         }
 
-        const allId = getOrder.map((u: any) => u.user_id)
+        const allId = getOrder.map((u: any) => u.order_id)
         allId.sort((a: any, b: any) => a - b)
 
         const insertOrder = await writeDb("order", {
@@ -112,7 +112,7 @@ class OrderCtr {
     }
 
     public async postUpdateCancelOrder(req: any): Promise<any> {
-        const reqInit = new OrderPostCreate(req)
+        const reqInit = new OrderPostCancel(req)
         if (reqInit.error) {
             return {
                 status: 400,
@@ -175,6 +175,24 @@ class OrderCtr {
             }
         }
 
+        if (findOrder.user_id !== reqInit.userId) {
+            return {
+                status: 400,
+                data: {
+                    msg: RESPONSE_MESSAGE.CANNOT_CANCEL_NOT_OWN_ORDER
+                }
+            }
+        }
+
+        if (findOrder.status !== ORDER_STATUS.WAITING) {
+            return {
+                status: 400,
+                data: {
+                    msg: RESPONSE_MESSAGE.CANNOT_CANCEL_FINISH_CANCEL_ORDER
+                }
+            }
+        }
+
         const updateOrder = await updateDb("order", {
             order_id: reqInit.orderId,
             user_id: findOrder.user_id,
@@ -203,7 +221,7 @@ class OrderCtr {
     }
 
     public async getOrder(req: any): Promise<any> {
-        const reqInit = new OrderPostCreate(req)
+        const reqInit = new OrderGet(req)
         if (reqInit.error) {
             return {
                 status: 400,

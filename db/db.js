@@ -113,7 +113,7 @@ var writeDb = function (keyName, insertData) { return __awaiter(void 0, void 0, 
 }); };
 exports.writeDb = writeDb;
 var updateDb = function (keyName, updateData) { return __awaiter(void 0, void 0, void 0, function () {
-    var read, readData;
+    var read, readData, getIndex, writeResult;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -125,7 +125,7 @@ var updateDb = function (keyName, updateData) { return __awaiter(void 0, void 0,
                         }
                         try {
                             var parseData = JSON.parse(data);
-                            resolve(parseData[keyName]);
+                            resolve(parseData);
                         }
                         catch (err) {
                             resolve(message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR);
@@ -137,7 +137,26 @@ var updateDb = function (keyName, updateData) { return __awaiter(void 0, void 0,
                 readData = _a.sent();
                 if (typeof readData === "string")
                     return [2 /*return*/, message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR];
-                return [2 /*return*/];
+                try {
+                    getIndex = readData[keyName].findIndex(function (kN) { return kN["".concat(keyName, "_id")] === updateData["".concat(keyName, "_id")]; });
+                    if (getIndex > -1)
+                        readData[keyName][getIndex] = updateData;
+                }
+                catch (err) {
+                    return [2 /*return*/, message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR];
+                }
+                writeResult = new Promise(function (resolve, reject) {
+                    fs.writeFile("./db/db.json", JSON.stringify(readData), function (err) {
+                        if (err) {
+                            resolve(message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR);
+                        }
+                        else {
+                            resolve(message_1.RESPONSE_MESSAGE.SUCCESS);
+                        }
+                    });
+                });
+                return [4 /*yield*/, Promise.resolve(writeResult)];
+            case 2: return [2 /*return*/, _a.sent()];
         }
     });
 }); };

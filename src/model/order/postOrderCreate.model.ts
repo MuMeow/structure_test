@@ -3,14 +3,12 @@ import { ONLYNUMBER } from "../../constant/regex/regex"
 
 class OrderPostCreate {
     public token: string
-    public orderId: number
     public productId: number
     public userId: number | undefined
     public error: string | undefined
     public errorExtend: string[]
 
     constructor(req: any) {
-        this.orderId = req.body.order_id
         this.productId = req.body.product_id
         this.token = req.headers.token
         this.userId = undefined
@@ -22,12 +20,6 @@ class OrderPostCreate {
             if (tokenDecode !== null) {
                 this.userId = tokenDecode.user_id
             }
-        }
-
-        if (req.body.order_id) {
-            if (!ONLYNUMBER.test(req.body.order_id)) this.errorExtend.push('order_id invalid pattern')
-        } else {
-            this.errorExtend.push('require order_id')
         }
 
         if (req.body.product_id) {

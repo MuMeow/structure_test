@@ -110,6 +110,9 @@ var AuthCtr = /** @class */ (function () {
                         return [2 /*return*/, {
                                 status: 200,
                                 data: {
+                                    data: {
+                                        user_id: allId[allId.length - 1] + 1
+                                    },
                                     msg: message_1.RESPONSE_MESSAGE.SUCCESS
                                 }
                             }];

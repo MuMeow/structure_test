@@ -6,7 +6,7 @@ var message_1 = require("../constant/resp/message");
 var auth_route_1 = require("./auth.route");
 var user_route_1 = require("./user.route");
 var product_route_1 = require("./product.route");
-// import OrderRoute from './order.route'
+var order_route_1 = require("./order.route");
 var router = (0, express_1.Router)();
 var AuthToken = function (req, res, next) {
     var header = req.headers;
@@ -27,5 +27,5 @@ var AuthToken = function (req, res, next) {
 router.use('/auth', auth_route_1.default);
 router.use('/user', AuthToken, user_route_1.default);
 router.use('/product', AuthToken, product_route_1.default);
-// router.use('/order', AuthToken, OrderRoute)
+router.use('/order', AuthToken, order_route_1.default);
 exports.default = router;

@@ -23,12 +23,26 @@
             "username": "fatcat03",
             "password": "fatcat03",
             "fullname": "fatcat03"
+        },
+        {
+            "user_id": 5,
+            "username": "fatcat04",
+            "password": "fatcat04",
+            "fullname": "fatcat04"
         }
     ],
     "product": [
         {
             "product_id": 1,
             "product_name": "catfood"
+        },
+        {
+            "product_id": 2,
+            "product_name": "fatcatfood"
+        },
+        {
+            "product_id": 3,
+            "product_name": "superfatcatfood"
         }
     ],
     "order": [
@@ -36,7 +50,13 @@
             "order_id": 1,
             "user_id": 4,
             "product_id": 1,
-            "status": "WAITING"
+            "status": "CANCEL"
+        },
+        {
+            "order_id": 2,
+            "user_id": 4,
+            "product_id": 1,
+            "status": "CANCEL"
         }
     ]
 }
