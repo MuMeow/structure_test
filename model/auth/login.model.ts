@@ -1,39 +1,31 @@
-import UniversalRequest,{UNIVERSAL_REQUEST} from '../UniversalRequest.model'
-import * as jwt from 'jsonwebtoken'
-
-class AuthPostRegister  {
-    public token: string
-    public userId: number
+class AuthPostLogin {
+    public username: string
+    public password: string
     public error: string | undefined
+    public errorExtend: string[]
 
-    constructor(
-        token: string,
-    ) {
-        super()
-        this.token = token
-        this.userId = 0
-        this.error = undefined;
+    constructor(req: any) {
+        this.username = req.body.username
+        this.password = req.body.password
+        this.error = undefined
+        this.errorExtend = []
 
-        const tokenDecode: any = jwt.decode(token) as { user_id: number; permisson: string }
-
-        if (tokenDecode !== null) {
-            this.userId = tokenDecode.user_id
+        if (this.username) {
+            if (typeof this.username !== "string") this.errorExtend.push('username invalid type , ')
+        } else {
+            this.errorExtend.push('require username , ')
         }
 
-        const validateForm: IValidateParameter<UNIVERSAL_REQUEST>[] = []
-        validateForm.push(
-            {
-                keyName: 'token',
-                keyValue: this.token,
-                format: UNIVERSAL_REQUEST.STRING,
-                regex: new RegExp('')
-            }
-        )
-        this.error = super.validateParameter(validateForm)
+        if (this.password) {
+            if (typeof this.password !== "string") this.errorExtend.push('password invalid type , ')
+        } else {
+            this.errorExtend.push('require password , ')
+        }
+
+        if (this.errorExtend.length > 0) this.error = this.errorExtend.join(',')
     }
 }
 
 export {
-    GetAgentme,
+    AuthPostLogin
 }
-

@@ -1,9 +1,9 @@
-import { AuthRegister } from "@model/auth/register.model"
-import { AuthLogin } from "@model/auth/register.model"
+import { AuthPostRegister } from "@model/auth/register.model"
+import { AuthPostLogin } from "@model/auth/login.model"
 
 class AuthCtr {
     public async register(req: any): Promise<any> {
-        const reqInit = new AuthRegister(req)
+        const reqInit = new AuthPostRegister(req)
         if (reqInit.error) {
             return {
                 status: 400,
@@ -31,7 +31,7 @@ class AuthCtr {
     }
 
     public async login(req: any): Promise<any> {
-        const reqInit = new AuthLogin(req)
+        const reqInit = new AuthPostLogin(req)
         if (reqInit.error) {
             return {
                 status: 400,
