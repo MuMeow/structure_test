@@ -5,6 +5,7 @@ var RESPONSE_MESSAGE;
 (function (RESPONSE_MESSAGE) {
     RESPONSE_MESSAGE["SUCCESS"] = "success";
     RESPONSE_MESSAGE["USER_NOT_FOUND"] = "user not found";
+    RESPONSE_MESSAGE["PRODUCT_NOT_FOUND"] = "product not found";
     RESPONSE_MESSAGE["WRONG_PASSWORD"] = "wrong password";
     RESPONSE_MESSAGE["DUPLICATE_USERNAME"] = "duplicate username";
     RESPONSE_MESSAGE["DUPLICATE_FULLNAME"] = "duplicate fullname";

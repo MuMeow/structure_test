@@ -4,7 +4,7 @@ import { RESPONSE_MESSAGE } from '../constant/resp/message'
 
 import AuthRoute from './auth.route'
 import UserRoute from './user.route'
-// import ProductRoute from './product.route'
+import ProductRoute from './product.route'
 // import OrderRoute from './order.route'
 
 const router = Router()
@@ -29,7 +29,7 @@ const AuthToken = (req: Request, res: Response, next: NextFunction) => {
 
 router.use('/auth', AuthRoute)
 router.use('/user', AuthToken, UserRoute)
-// router.use('/product', AuthToken, ProductRoute)
+router.use('/product', AuthToken, ProductRoute)
 // router.use('/order', AuthToken, OrderRoute)
 
 export default router

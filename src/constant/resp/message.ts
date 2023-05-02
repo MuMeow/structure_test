@@ -1,6 +1,7 @@
 enum RESPONSE_MESSAGE {
     SUCCESS = 'success',
     USER_NOT_FOUND = 'user not found',
+    PRODUCT_NOT_FOUND = 'product not found',
     WRONG_PASSWORD = 'wrong password',
     DUPLICATE_USERNAME = 'duplicate username',
     DUPLICATE_FULLNAME = 'duplicate fullname',
