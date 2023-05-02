@@ -1,6 +1,7 @@
 import { AuthPostRegister } from "../../model/auth/register.model"
 import { AuthPostLogin } from "../../model/auth/login.model"
 import { readDb, writeDb } from "../../../db/db"
+import { RESPONSE_MESSAGE } from "../../constant/resp/message"
 import * as jwt from 'jsonwebtoken'
 
 class AuthCtr {
@@ -17,11 +18,11 @@ class AuthCtr {
 
         const getUser = await readDb("user")
 
-        if (typeof getUser === "string") {
+        if (getUser === RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR) {
             return {
                 status: 500,
                 data: {
-                    msg: "Internal Server Error"
+                    msg: RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR
                 }
             }
         }
@@ -32,7 +33,7 @@ class AuthCtr {
             return {
                 status: 400,
                 data: {
-                    msg: "duplicate username"
+                    msg: RESPONSE_MESSAGE.DUPLICATE_USERNAME
                 }
             }
         }
@@ -43,7 +44,7 @@ class AuthCtr {
             return {
                 status: 400,
                 data: {
-                    msg: "duplicate fullname"
+                    msg: RESPONSE_MESSAGE.DUPLICATE_FULLNAME
                 }
             }
         }
@@ -58,11 +59,11 @@ class AuthCtr {
             fullname: reqInit.fullname
         })
 
-        if (insertUser === "Internal Server Error") {
+        if (insertUser === RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR) {
             return {
                 status: 500,
                 data: {
-                    msg: "Internal Server Error"
+                    msg: RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR
                 }
             }
         }
@@ -70,7 +71,7 @@ class AuthCtr {
         return {
             status: 200,
             data: {
-                msg: "register success"
+                msg: RESPONSE_MESSAGE.SUCCESS
             }
         }
     }
@@ -88,11 +89,11 @@ class AuthCtr {
 
         const getUser = await readDb("user")
 
-        if (typeof getUser === "string") {
+        if (getUser === RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR) {
             return {
                 status: 500,
                 data: {
-                    msg: "Internal Server Error"
+                    msg: RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR
                 }
             }
         }
@@ -103,7 +104,7 @@ class AuthCtr {
             return {
                 status: 400,
                 data: {
-                    msg: "user not found"
+                    msg: RESPONSE_MESSAGE.USER_NOT_FOUND
                 }
             }
         }
@@ -112,7 +113,7 @@ class AuthCtr {
             return {
                 status: 400,
                 data: {
-                    msg: "wrong password"
+                    msg: RESPONSE_MESSAGE.WRONG_PASSWORD
                 }
             }
         }
@@ -127,7 +128,7 @@ class AuthCtr {
             status: 200,
             data: {
                 token: genToken,
-                msg: "login success"
+                msg: RESPONSE_MESSAGE.SUCCESS
             }
         }
     }
