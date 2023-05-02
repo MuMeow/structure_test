@@ -66,16 +66,35 @@ const updateDb = async (keyName: string, updateData: any) => {
             }
             try {
                 const parseData = JSON.parse(data)
-                resolve(parseData[keyName])
+                resolve(parseData)
             } catch (err) {
                 resolve(RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR)
             }
         })
     })
 
-    const readData = await Promise.resolve(read)
+    const readData: any = await Promise.resolve(read)
 
     if (typeof readData === "string") return RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR
+
+    try {
+        const getIndex = readData[keyName].findIndex((kN: any) => kN[`${keyName}_id`] === updateData[`${keyName}_id`])
+        if (getIndex > -1) readData[keyName][getIndex] = updateData
+    } catch (err) {
+        return RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR
+    }
+
+    const writeResult = new Promise((resolve, reject) => {
+        fs.writeFile("./db/db.json", JSON.stringify(readData), err => {
+            if (err) {
+                resolve(RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR)
+            } else {
+                resolve(RESPONSE_MESSAGE.SUCCESS)
+            }
+        })
+    })
+
+    return await Promise.resolve(writeResult)
 }
 
 export {

@@ -71,6 +71,9 @@ class AuthCtr {
         return {
             status: 200,
             data: {
+                data: {
+                    user_id: allId[allId.length - 1] + 1
+                },
                 msg: RESPONSE_MESSAGE.SUCCESS
             }
         }
