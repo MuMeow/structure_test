@@ -1,0 +1,72 @@
+@Host = http://127.0.0.1:3000
+
+###
+
+POST {{Host}}/auth/register HTTP/1.1
+content-type: application/json
+
+{
+    "username": "fatcat05",
+    "password": "fatcat05",
+    "fullname": "fatcat05"
+}
+
+###
+
+POST {{Host}}/auth/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "fatcat05",
+    "password": "fatcat05"
+}
+
+###
+
+GET {{Host}}/user HTTP/1.1
+content-type: application/json
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE2ODMwNjcwODd9.C4qD8l9NiJQKAXEwar4SSRI5sERIhcvaFmPvseD9gKU
+
+###
+
+GET {{Host}}/user/order/history HTTP/1.1
+content-type: application/json
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE2ODMwNjcwNDN9.1ffdYDCOiPBQJu3n8Vy0Yb4y06xGoWEFZ8sKJ7UCk_Q
+
+###
+
+GET {{Host}}/product HTTP/1.1
+content-type: application/json
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE2ODMwNjcwODd9.C4qD8l9NiJQKAXEwar4SSRI5sERIhcvaFmPvseD9gKU
+
+###
+
+GET {{Host}}/product/one?product_id=3 HTTP/1.1
+content-type: application/json
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE2ODMwNjcwODd9.C4qD8l9NiJQKAXEwar4SSRI5sERIhcvaFmPvseD9gKU
+
+###
+
+POST {{Host}}/order/create HTTP/1.1
+content-type: application/json
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE2ODMwNjcwODd9.C4qD8l9NiJQKAXEwar4SSRI5sERIhcvaFmPvseD9gKU
+
+{
+    "product_id": 3
+}
+
+###
+
+POST {{Host}}/order/cancel HTTP/1.1
+content-type: application/json
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE2ODMwNjcwODd9.C4qD8l9NiJQKAXEwar4SSRI5sERIhcvaFmPvseD9gKU
+
+{
+    "order_id": 3
+}
+
+###
+
+GET {{Host}}/order HTTP/1.1
+content-type: application/json
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE2ODMwNjcwODd9.C4qD8l9NiJQKAXEwar4SSRI5sERIhcvaFmPvseD9gKU
