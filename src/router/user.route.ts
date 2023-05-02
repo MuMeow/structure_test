@@ -9,7 +9,7 @@ router.get('/', async (req: Request, res: Response) => {
     res.status(result.status).json(result.data)
 })
 
-router.post('/order/history', async (req: Request, res: Response) => {
+router.get('/order/history', async (req: Request, res: Response) => {
     const userCtr = new UserCtr()
     const result = await userCtr.getOrder(req)
     res.status(result.status).json(result.data)

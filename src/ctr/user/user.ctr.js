@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,27 +47,27 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthCtr = void 0;
-var register_model_1 = require("../../model/auth/register.model");
-var login_model_1 = require("../../model/auth/login.model");
+exports.UserCtr = void 0;
+var getUser_model_1 = require("../../model/user/getUser.model");
+var getOrder_model_1 = require("../../model/user/getOrder.model");
 var db_1 = require("../../../db/db");
 var message_1 = require("../../constant/resp/message");
-var jwt = require("jsonwebtoken");
-var AuthCtr = /** @class */ (function () {
-    function AuthCtr() {
+var orderStatus_1 = require("../../constant/order/orderStatus");
+var UserCtr = /** @class */ (function () {
+    function UserCtr() {
     }
-    AuthCtr.prototype.register = function (req) {
+    UserCtr.prototype.getUser = function (req) {
         return __awaiter(this, void 0, void 0, function () {
-            var reqInit, getUser, duplicateUsername, duplicateFullname, allId, insertUser;
+            var reqInit, getUser, findUser;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        reqInit = new register_model_1.AuthPostRegister(req);
-                        if (reqInit.error) {
+                        reqInit = new getUser_model_1.UserGet(req);
+                        if (!reqInit.userId) {
                             return [2 /*return*/, {
                                     status: 400,
                                     data: {
-                                        msg: reqInit.error
+                                        msg: message_1.RESPONSE_MESSAGE.INVALID_TOKEN
                                     }
                                 }];
                         }
@@ -71,79 +82,7 @@ var AuthCtr = /** @class */ (function () {
                                     }
                                 }];
                         }
-                        duplicateUsername = getUser.find(function (u) { return u.username === reqInit.username; });
-                        if (duplicateUsername) {
-                            return [2 /*return*/, {
-                                    status: 400,
-                                    data: {
-                                        msg: message_1.RESPONSE_MESSAGE.DUPLICATE_USERNAME
-                                    }
-                                }];
-                        }
-                        duplicateFullname = getUser.find(function (u) { return u.fullname === reqInit.fullname; });
-                        if (duplicateFullname) {
-                            return [2 /*return*/, {
-                                    status: 400,
-                                    data: {
-                                        msg: message_1.RESPONSE_MESSAGE.DUPLICATE_FULLNAME
-                                    }
-                                }];
-                        }
-                        allId = getUser.map(function (u) { return u.user_id; });
-                        allId.sort(function (a, b) { return a - b; });
-                        return [4 /*yield*/, (0, db_1.writeDb)("user", {
-                                user_id: allId[allId.length - 1] + 1,
-                                username: reqInit.username,
-                                password: reqInit.password,
-                                fullname: reqInit.fullname
-                            })];
-                    case 2:
-                        insertUser = _a.sent();
-                        if (insertUser === message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR) {
-                            return [2 /*return*/, {
-                                    status: 500,
-                                    data: {
-                                        msg: message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR
-                                    }
-                                }];
-                        }
-                        return [2 /*return*/, {
-                                status: 200,
-                                data: {
-                                    msg: message_1.RESPONSE_MESSAGE.SUCCESS
-                                }
-                            }];
-                }
-            });
-        });
-    };
-    AuthCtr.prototype.login = function (req) {
-        return __awaiter(this, void 0, void 0, function () {
-            var reqInit, getUser, findUser, genToken;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        reqInit = new login_model_1.AuthPostLogin(req);
-                        if (reqInit.error) {
-                            return [2 /*return*/, {
-                                    status: 400,
-                                    data: {
-                                        msg: reqInit.error
-                                    }
-                                }];
-                        }
-                        return [4 /*yield*/, (0, db_1.readDb)("user")];
-                    case 1:
-                        getUser = _a.sent();
-                        if (getUser === message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR) {
-                            return [2 /*return*/, {
-                                    status: 500,
-                                    data: {
-                                        msg: message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR
-                                    }
-                                }];
-                        }
-                        findUser = getUser.find(function (u) { return u.username === reqInit.username; });
+                        findUser = getUser.find(function (u) { return u.user_id === reqInit.userId; });
                         if (!findUser) {
                             return [2 /*return*/, {
                                     status: 400,
@@ -152,21 +91,10 @@ var AuthCtr = /** @class */ (function () {
                                     }
                                 }];
                         }
-                        if (findUser.password !== reqInit.password) {
-                            return [2 /*return*/, {
-                                    status: 400,
-                                    data: {
-                                        msg: message_1.RESPONSE_MESSAGE.WRONG_PASSWORD
-                                    }
-                                }];
-                        }
-                        genToken = jwt.sign({
-                            user_id: findUser.user_id
-                        }, "1234");
                         return [2 /*return*/, {
                                 status: 200,
                                 data: {
-                                    token: genToken,
+                                    data: __assign({}, findUser),
                                     msg: message_1.RESPONSE_MESSAGE.SUCCESS
                                 }
                             }];
@@ -174,6 +102,75 @@ var AuthCtr = /** @class */ (function () {
             });
         });
     };
-    return AuthCtr;
+    UserCtr.prototype.getOrder = function (req) {
+        return __awaiter(this, void 0, void 0, function () {
+            var reqInit, getUser, findUser, getOrder, allOrder;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        reqInit = new getOrder_model_1.UserGetOrder(req);
+                        if (!reqInit.userId) {
+                            return [2 /*return*/, {
+                                    status: 400,
+                                    data: {
+                                        msg: message_1.RESPONSE_MESSAGE.INVALID_TOKEN
+                                    }
+                                }];
+                        }
+                        return [4 /*yield*/, (0, db_1.readDb)("user")];
+                    case 1:
+                        getUser = _a.sent();
+                        if (getUser === message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR) {
+                            return [2 /*return*/, {
+                                    status: 500,
+                                    data: {
+                                        msg: message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR
+                                    }
+                                }];
+                        }
+                        findUser = getUser.find(function (u) { return u.user_id === reqInit.userId; });
+                        if (!findUser) {
+                            return [2 /*return*/, {
+                                    status: 400,
+                                    data: {
+                                        msg: message_1.RESPONSE_MESSAGE.USER_NOT_FOUND
+                                    }
+                                }];
+                        }
+                        return [4 /*yield*/, (0, db_1.readDb)("order")];
+                    case 2:
+                        getOrder = _a.sent();
+                        if (getOrder === message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR) {
+                            return [2 /*return*/, {
+                                    status: 500,
+                                    data: {
+                                        msg: message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR
+                                    }
+                                }];
+                        }
+                        allOrder = [];
+                        getOrder.forEach(function (o) {
+                            if (o.user_id === reqInit.userId && o.status !== orderStatus_1.ORDER_STATUS.WAITING) {
+                                allOrder.push({
+                                    order_id: o.order_id,
+                                    user_id: o.user_id,
+                                    product_id: o.product_id,
+                                    status: o.status
+                                });
+                            }
+                        });
+                        console.log(allOrder, ' --- allOrder');
+                        return [2 /*return*/, {
+                                status: 200,
+                                data: {
+                                    data: allOrder,
+                                    msg: message_1.RESPONSE_MESSAGE.SUCCESS
+                                }
+                            }];
+                }
+            });
+        });
+    };
+    return UserCtr;
 }());
-exports.AuthCtr = AuthCtr;
+exports.UserCtr = UserCtr;

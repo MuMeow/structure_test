@@ -53,7 +53,7 @@ class AuthCtr {
         allId.sort((a: any, b: any) => a - b)
 
         const insertUser = await writeDb("user", {
-            user_id: allId[allId.length - 1].user_id,
+            user_id: allId[allId.length - 1] + 1,
             username: reqInit.username,
             password: reqInit.password,
             fullname: reqInit.fullname
@@ -124,6 +124,7 @@ class AuthCtr {
             },
             "1234"
         )
+
         return {
             status: 200,
             data: {

@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateDb = exports.writeDb = exports.readDb = void 0;
 var fs = require("fs");
+var message_1 = require("../src/constant/resp/message");
 var readDb = function (keyName) { return __awaiter(void 0, void 0, void 0, function () {
     var readResult;
     return __generator(this, function (_a) {
@@ -47,14 +48,14 @@ var readDb = function (keyName) { return __awaiter(void 0, void 0, void 0, funct
                     fs.readFile("./db/db.json", "utf8", function (err, data) {
                         if (err) {
                             console.log("Error reading file from disk:", err);
-                            resolve("Internal Server Error");
+                            resolve(message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR);
                         }
                         try {
                             var parseData = JSON.parse(data);
                             resolve(parseData[keyName]);
                         }
                         catch (err) {
-                            resolve("Internal Server Error");
+                            resolve(message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR);
                         }
                     });
                 });
@@ -73,14 +74,14 @@ var writeDb = function (keyName, insertData) { return __awaiter(void 0, void 0, 
                     fs.readFile("./db/db.json", "utf8", function (err, data) {
                         if (err) {
                             console.log("Error reading file from disk:", err);
-                            resolve("Internal Server Error");
+                            resolve(message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR);
                         }
                         try {
                             var parseData = JSON.parse(data);
                             resolve(parseData);
                         }
                         catch (err) {
-                            resolve("Internal Server Error");
+                            resolve(message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR);
                         }
                     });
                 });
@@ -88,20 +89,20 @@ var writeDb = function (keyName, insertData) { return __awaiter(void 0, void 0, 
             case 1:
                 readData = _a.sent();
                 if (typeof readData === "string")
-                    return [2 /*return*/, "Internal Server Error"];
+                    return [2 /*return*/, message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR];
                 try {
                     readData[keyName].push(insertData);
                 }
                 catch (err) {
-                    return [2 /*return*/, "Internal Server Error"];
+                    return [2 /*return*/, message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR];
                 }
                 writeResult = new Promise(function (resolve, reject) {
                     fs.writeFile("./db/db.json", JSON.stringify(readData), function (err) {
                         if (err) {
-                            resolve("Internal Server Error");
+                            resolve(message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR);
                         }
                         else {
-                            resolve("Success");
+                            resolve(message_1.RESPONSE_MESSAGE.SUCCESS);
                         }
                     });
                 });
@@ -120,14 +121,14 @@ var updateDb = function (keyName, updateData) { return __awaiter(void 0, void 0,
                     fs.readFile("./db/db.json", "utf8", function (err, data) {
                         if (err) {
                             console.log("Error reading file from disk:", err);
-                            resolve("Internal Server Error");
+                            resolve(message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR);
                         }
                         try {
                             var parseData = JSON.parse(data);
                             resolve(parseData[keyName]);
                         }
                         catch (err) {
-                            resolve("Internal Server Error");
+                            resolve(message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR);
                         }
                     });
                 });
@@ -135,7 +136,7 @@ var updateDb = function (keyName, updateData) { return __awaiter(void 0, void 0,
             case 1:
                 readData = _a.sent();
                 if (typeof readData === "string")
-                    return [2 /*return*/, "Internal Server Error"];
+                    return [2 /*return*/, message_1.RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR];
                 return [2 /*return*/];
         }
     });
