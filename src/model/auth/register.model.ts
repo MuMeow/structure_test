@@ -27,7 +27,7 @@ class AuthPostRegister {
         if (this.fullname) {
             if (typeof this.fullname !== "string") this.errorExtend.push('fullname invalid type')
         } else {
-            this.errorExtend.push('require username')
+            this.errorExtend.push('require fullname')
         }
 
         if (this.errorExtend.length > 0) this.error = this.errorExtend.join(' , ')

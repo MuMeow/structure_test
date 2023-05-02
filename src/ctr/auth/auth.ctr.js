@@ -39,66 +39,137 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthCtr = void 0;
 var register_model_1 = require("../../model/auth/register.model");
 var login_model_1 = require("../../model/auth/login.model");
+var db_1 = require("../../../db/db");
+var jwt = require("jsonwebtoken");
 var AuthCtr = /** @class */ (function () {
     function AuthCtr() {
     }
     AuthCtr.prototype.register = function (req) {
         return __awaiter(this, void 0, void 0, function () {
-            var reqInit;
+            var reqInit, getUser, duplicateUsername, duplicateFullname, allId, insertUser;
             return __generator(this, function (_a) {
-                reqInit = new register_model_1.AuthPostRegister(req);
-                if (reqInit.error) {
-                    return [2 /*return*/, {
-                            status: 400,
-                            data: {
-                                msg: reqInit.error
-                            }
-                        }];
-                }
-                // if (user.length === 0) {
-                //     return {
-                //         status: 400,
-                //         data: {
-                //             msg: "user not found"
-                //         }
-                //     }
-                // }
-                return [2 /*return*/, {
-                        status: 200,
-                        data: {
-                            msg: "register success"
+                switch (_a.label) {
+                    case 0:
+                        reqInit = new register_model_1.AuthPostRegister(req);
+                        if (reqInit.error) {
+                            return [2 /*return*/, {
+                                    status: 400,
+                                    data: {
+                                        msg: reqInit.error
+                                    }
+                                }];
                         }
-                    }];
+                        return [4 /*yield*/, (0, db_1.readDb)("user")];
+                    case 1:
+                        getUser = _a.sent();
+                        if (typeof getUser === "string") {
+                            return [2 /*return*/, {
+                                    status: 500,
+                                    data: {
+                                        msg: "Internal Server Error"
+                                    }
+                                }];
+                        }
+                        duplicateUsername = getUser.find(function (u) { return u.username === reqInit.username; });
+                        if (duplicateUsername) {
+                            return [2 /*return*/, {
+                                    status: 400,
+                                    data: {
+                                        msg: "duplicate username"
+                                    }
+                                }];
+                        }
+                        duplicateFullname = getUser.find(function (u) { return u.fullname === reqInit.fullname; });
+                        if (duplicateFullname) {
+                            return [2 /*return*/, {
+                                    status: 400,
+                                    data: {
+                                        msg: "duplicate fullname"
+                                    }
+                                }];
+                        }
+                        allId = getUser.map(function (u) { return u.user_id; });
+                        allId.sort(function (a, b) { return a - b; });
+                        return [4 /*yield*/, (0, db_1.writeDb)("user", {
+                                user_id: allId[allId.length - 1].user_id,
+                                username: reqInit.username,
+                                password: reqInit.password,
+                                fullname: reqInit.fullname
+                            })];
+                    case 2:
+                        insertUser = _a.sent();
+                        if (insertUser === "Internal Server Error") {
+                            return [2 /*return*/, {
+                                    status: 500,
+                                    data: {
+                                        msg: "Internal Server Error"
+                                    }
+                                }];
+                        }
+                        return [2 /*return*/, {
+                                status: 200,
+                                data: {
+                                    msg: "register success"
+                                }
+                            }];
+                }
             });
         });
     };
     AuthCtr.prototype.login = function (req) {
         return __awaiter(this, void 0, void 0, function () {
-            var reqInit;
+            var reqInit, getUser, findUser, genToken;
             return __generator(this, function (_a) {
-                reqInit = new login_model_1.AuthPostLogin(req);
-                if (reqInit.error) {
-                    return [2 /*return*/, {
-                            status: 400,
-                            data: {
-                                msg: reqInit.error
-                            }
-                        }];
-                }
-                // if (user.length === 0) {
-                //     return {
-                //         status: 400,
-                //         data: {
-                //             msg: "user not found"
-                //         }
-                //     }
-                // }
-                return [2 /*return*/, {
-                        status: 200,
-                        data: {
-                            msg: "register success"
+                switch (_a.label) {
+                    case 0:
+                        reqInit = new login_model_1.AuthPostLogin(req);
+                        if (reqInit.error) {
+                            return [2 /*return*/, {
+                                    status: 400,
+                                    data: {
+                                        msg: reqInit.error
+                                    }
+                                }];
                         }
-                    }];
+                        return [4 /*yield*/, (0, db_1.readDb)("user")];
+                    case 1:
+                        getUser = _a.sent();
+                        if (typeof getUser === "string") {
+                            return [2 /*return*/, {
+                                    status: 500,
+                                    data: {
+                                        msg: "Internal Server Error"
+                                    }
+                                }];
+                        }
+                        findUser = getUser.find(function (u) { return u.username === reqInit.username; });
+                        if (!findUser) {
+                            return [2 /*return*/, {
+                                    status: 400,
+                                    data: {
+                                        msg: "user not found"
+                                    }
+                                }];
+                        }
+                        if (findUser.password !== reqInit.password) {
+                            return [2 /*return*/, {
+                                    status: 400,
+                                    data: {
+                                        msg: "wrong password"
+                                    }
+                                }];
+                        }
+                        genToken = jwt.sign({
+                            user_id: findUser.user_id
+                        }, "1234");
+                        return [2 /*return*/, {
+                                status: 200,
+                                data: {
+                                    token: genToken,
+                                    msg: "login success"
+                                }
+                            }];
+                }
             });
         });
     };
