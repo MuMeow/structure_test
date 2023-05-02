@@ -52,7 +52,7 @@ content-type: application/json
 token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2LCJpYXQiOjE2ODMwNjcwODd9.C4qD8l9NiJQKAXEwar4SSRI5sERIhcvaFmPvseD9gKU
 
 {
-    "product_id": 3
+    "product_id": 2
 }
 
 ###
