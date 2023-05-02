@@ -1,13 +1,11 @@
-import { Router } from 'express'
-import * as jwt from 'jsonwebtoken'
-
-import AuthRoute from './auth.route'
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var auth_route_1 = require("./auth.route");
 // import UserRoute from './agent.route'
 // import ProductRoute from './product.route'
 // import OrderRoute from './order.route'
-
-const router = Router()
-
+var router = (0, express_1.Router)();
 // const AuthenToken = (req: Request, res: Response, next: NextFunction) => {
 //     const header: { token: string } = req.headers as { token: string }
 //     if (header.token === '')
@@ -17,7 +15,6 @@ const router = Router()
 //                 code: 401000,
 //                 devMessage: 'Unauthorized'
 //             })
-
 //     jwt.verify(header.token, "1234", (err: any) => {
 //         if (err) {
 //             return res.status(401)
@@ -30,10 +27,8 @@ const router = Router()
 //         next()
 //     })
 // }
-
-router.use('/auth', AuthRoute)
+router.use('/auth', auth_route_1.default);
 // router.use('/user', AuthenToken, UserRoute)
 // router.use('/product', AuthenToken, ProductRoute)
 // router.use('/order', AuthenToken, OrderRoute)
-
-export default router
+exports.default = router;

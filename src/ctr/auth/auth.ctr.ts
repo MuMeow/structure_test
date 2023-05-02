@@ -1,5 +1,5 @@
-import { AuthPostRegister } from "@model/auth/register.model"
-import { AuthPostLogin } from "@model/auth/login.model"
+import { AuthPostRegister } from "../../model/auth/register.model"
+import { AuthPostLogin } from "../../model/auth/login.model"
 
 class AuthCtr {
     public async register(req: any): Promise<any> {

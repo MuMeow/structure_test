@@ -1,6 +1,6 @@
-import express from 'express'
-import bodyParser from 'body-parser'
-import BaseRouter from './router'
+import * as express from 'express'
+import * as bodyParser from 'body-parser'
+import BaseRouter from './src/router'
 
 const app = express()
 app.use(bodyParser.urlencoded({ extended: true }))

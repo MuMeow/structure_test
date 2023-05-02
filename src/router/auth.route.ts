@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express'
-import { AuthCtr } from '@ctr/auth/auth.ctr'
+import { AuthCtr } from '../ctr/auth/auth.ctr'
 
 const router = Router()
 

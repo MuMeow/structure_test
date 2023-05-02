@@ -13,24 +13,24 @@ class AuthPostRegister {
         this.errorExtend = []
 
         if (this.username) {
-            if (typeof this.username !== "string") this.errorExtend.push('username invalid type , ')
+            if (typeof this.username !== "string") this.errorExtend.push('username invalid type')
         } else {
-            this.errorExtend.push('require username , ')
+            this.errorExtend.push('require username')
         }
 
         if (this.password) {
-            if (typeof this.password !== "string") this.errorExtend.push('password invalid type , ')
+            if (typeof this.password !== "string") this.errorExtend.push('password invalid type')
         } else {
-            this.errorExtend.push('require password , ')
+            this.errorExtend.push('require password')
         }
 
         if (this.fullname) {
-            if (typeof this.fullname !== "string") this.errorExtend.push('fullname invalid type , ')
+            if (typeof this.fullname !== "string") this.errorExtend.push('fullname invalid type')
         } else {
-            this.errorExtend.push('require username , ')
+            this.errorExtend.push('require username')
         }
 
-        if (this.errorExtend.length > 0) this.error = this.errorExtend.join(',')
+        if (this.errorExtend.length > 0) this.error = this.errorExtend.join(' , ')
     }
 }
 
