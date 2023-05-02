@@ -1,20 +1,25 @@
 {
   "compilerOptions": {
-    "target": "es2016",
     "module": "commonjs",
+    "baseUrl": "./",
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "skipLibCheck": true,
+    "moduleResolution": "node",
+    "target": "es2016",
     "paths": {
-      "@model/*": [
-        "./model/*"
-      ],
       "@ctr/*": [
-        "./ctr/*"
+        "src/ctr/*"
+      ],
+      "@model/*": [
+        "src/model/*"
       ],
       "@constant/*": [
-        "./constant/*"
+        "src/constant/*"
       ]
     }
-  }
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules"]
 }

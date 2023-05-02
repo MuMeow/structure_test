@@ -13,14 +13,14 @@ class AuthCtr {
             }
         }
 
-        if (user.length === 0) {
-            return {
-                status: 400,
-                data: {
-                    msg: "user not found"
-                }
-            }
-        }
+        // if (user.length === 0) {
+        //     return {
+        //         status: 400,
+        //         data: {
+        //             msg: "user not found"
+        //         }
+        //     }
+        // }
 
         return {
             status: 200,
@@ -41,14 +41,14 @@ class AuthCtr {
             }
         }
 
-        if (user.length === 0) {
-            return {
-                status: 400,
-                data: {
-                    msg: "user not found"
-                }
-            }
-        }
+        // if (user.length === 0) {
+        //     return {
+        //         status: 400,
+        //         data: {
+        //             msg: "user not found"
+        //         }
+        //     }
+        // }
 
         return {
             status: 200,
